@@ -5,9 +5,24 @@
  * */
 class Account extends Entity {
   /**
-   * Получает информацию о счёте
+   * Указываем базовый URL для всех запросов со счетами
    * */
-  static get(id = '', callback){
+  static URL = '/account';
 
+  /**
+   * Получает информацию о счёте
+   * Обращается к /account/:id с GET-запросом
+   * */
+  static get(id, callback) {
+    if (!id) {
+      callback?.(new Error('ID счёта обязателен'), null);
+      return null;
+    }
+
+    return createRequest({
+      url: `${this.URL}/${encodeURIComponent(id)}`,
+      method: 'GET',
+      callback,
+    });
   }
 }
